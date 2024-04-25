@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:terrasoi/util/verify_account.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -9,6 +9,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // variables
+  Verification v = Verification();
+  TextEditingController _username = TextEditingController();
+  TextEditingController _password = TextEditingController();
+
+  void verifyAccount() {
+    if (v.isValid(_username.text, _password.text)) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      var t = SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text('Invalid Username/Password!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(t);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +64,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Row(
                 children: [
-                  SizedBox(width: 25.0,),
+                  SizedBox(
+                    width: 25.0,
+                  ),
                   Image.asset(
                     'assets/icons/person_icon.png',
                     width: 40,
@@ -58,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: 250.0,
                     child: TextField(
+                      controller: _username,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(0),
@@ -79,7 +99,9 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Row(
                 children: [
-                  SizedBox(width: 25.0,),
+                  SizedBox(
+                    width: 25.0,
+                  ),
                   Image.asset(
                     'assets/icons/lock_icon.png',
                     width: 40,
@@ -90,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: 250.0,
                     child: TextField(
+                      controller: _password,
                       obscureText: true,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
@@ -124,7 +147,9 @@ class _LoginPageState extends State<LoginPage> {
                             backgroundColor: Color.fromRGBO(155, 231, 157, 1),
                             foregroundColor: Colors.black,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            verifyAccount();
+                          },
                           child: Text('Log in')),
                       Text(
                         'Forgot your Password?',
@@ -141,12 +166,17 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text('Don\'t have an account? '),
-                  Text(
-                    'Create',
-                    style: TextStyle(
-                      decorationColor: Colors.blue,
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
+                    child: Text(
+                      'Create',
+                      style: TextStyle(
+                        decorationColor: Colors.blue,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                   SizedBox(
