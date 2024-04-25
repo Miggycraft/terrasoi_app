@@ -13,6 +13,3 @@ void main() {
     }
   ));
 }
-
-//todo
-// get font lol

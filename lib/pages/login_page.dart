@@ -12,6 +12,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         // height: double.infinity,
         // width: double.infinity,
@@ -45,9 +46,8 @@ class _LoginPageState extends State<LoginPage> {
                 height: 30.0,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(width: 25.0,),
                   Image.asset(
                     'assets/icons/person_icon.png',
                     width: 40,
@@ -78,9 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                 height: 50.0,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(width: 25.0,),
                   Image.asset(
                     'assets/icons/lock_icon.png',
                     width: 40,
@@ -112,15 +111,12 @@ class _LoginPageState extends State<LoginPage> {
                 height: 35,
               ),
               Row(
-                // hack just to align with the username, pwede remove?
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 50,
-                  ),
+                  // SizedBox(
+                  //   width: 50,
+                  // ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
                           style: ElevatedButton.styleFrom(
