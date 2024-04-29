@@ -14,6 +14,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
 
+
   void verifyAccount() {
     if (v.isValid(_username.text, _password.text)) {
       Navigator.pushReplacementNamed(context, '/home');
@@ -28,11 +29,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Container(
+          height: size.height,
           decoration: const BoxDecoration(
               image: DecorationImage(
             image: AssetImage('assets/background.png'),
@@ -80,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _username,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(0),
+                            contentPadding: const EdgeInsets.all(0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
@@ -183,9 +186,6 @@ class _LoginPageState extends State<LoginPage> {
                       width: 25,
                     ),
                   ],
-                ),
-                const SizedBox(
-                  height: 80.0,
                 ),
               ],
             ),

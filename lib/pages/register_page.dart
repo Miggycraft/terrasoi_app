@@ -16,11 +16,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           // width: ,
-          // height: double.infinity,
+          height: size.height,
           decoration: BoxDecoration(
               image: DecorationImage(image: AssetImage('assets/background.png'))),
           child: Padding(
@@ -165,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                     },
                     child: const Text('Register')),
-              SizedBox(height: 130,),
+              // SizedBox(height: 130,),
               ],
             ),
           ),
