@@ -3,4 +3,9 @@
 Terrasoi App, yaddi yadda
 
 ## TO-DO LIST!
-> lahat lol
+- implement homepage
+- implement drawer (and logout)
+- implement scheduling
+- implement view reports
+
+Kahit front-end lang muna, those shits are the top priority that needs to be done asap
