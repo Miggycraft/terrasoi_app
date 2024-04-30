@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:terrasoi/component/drawer_component.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,10 +48,10 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      drawer: Drawer(),
+      drawer: DrawerComponent(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
               icon: Icon(
                 Icons.home_outlined,
