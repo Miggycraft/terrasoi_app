@@ -4,7 +4,6 @@ Terrasoi App, yaddi yadda
 
 ## TO-DO LIST!
 - implement homepage
-- implement drawer (and logout)
 - implement scheduling
 - implement view reports
 
