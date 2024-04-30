@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 15.0,
                     ),
                     Container(
-                      width: 250.0,
+                      width: 300.0,
                       child: TextField(
                         controller: _username,
                         textAlign: TextAlign.center,
@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 15.0,
                     ),
                     Container(
-                      width: 250.0,
+                      width: 300.0,
                       child: TextField(
                         controller: _password,
                         obscureText: true,
@@ -158,12 +158,23 @@ class _LoginPageState extends State<LoginPage> {
                           'Forgot your Password?',
                           style: TextStyle(fontSize: 9, color: Colors.grey),
                         ),
+                        SizedBox(height: 20,),
+                        Row(
+                          children: [
+                            Text(
+                              'Guest Login',
+                              style: TextStyle(fontSize: 12,decoration: TextDecoration.underline),
+                            ),
+                            SizedBox(width: 8,),
+                            Icon(Icons.info_outline, size: 17, color: Colors.grey,),
+                          ],
+                        ),
                       ],
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 90.0,
+                  height: 70.0,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

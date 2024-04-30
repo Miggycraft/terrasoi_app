@@ -23,7 +23,8 @@ class _RegisterPageState extends State<RegisterPage> {
           // width: ,
           height: size.height,
           decoration: BoxDecoration(
-              image: DecorationImage(image: AssetImage('assets/background.png'))),
+              image:
+                  DecorationImage(image: AssetImage('assets/background.png'))),
           child: Padding(
             padding: EdgeInsets.only(top: 80.0),
             child: Column(
@@ -62,12 +63,18 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: 15.0,
                         ),
                         SizedBox(
-                          width: 250.0,
+                          width: 300.0,
+                          // height: 55,
                           child: DropdownButtonFormField<String>(
+                            hint: Text(
+                              'Select Account Status',
+                              textAlign: TextAlign.center,
+                            ),
                             borderRadius: BorderRadius.circular(25),
                             isDense: true,
-                            padding: EdgeInsets.all(0),
                             decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.symmetric(horizontal: 20),
                               focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black)),
                               border: OutlineInputBorder(
@@ -78,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text(value),
+                                child: Text(value, style: TextStyle(fontWeight: FontWeight.w400),),
                               );
                             }).toList(),
                             onChanged: (String? value) {},
@@ -102,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: 15.0,
                         ),
                         Container(
-                          width: 250.0,
+                          width: 300.0,
                           child: TextField(
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
@@ -111,7 +118,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: Colors.black),
+                                borderSide:
+                                    const BorderSide(color: Colors.black),
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               hintText: 'Email Address',
@@ -138,7 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       width: 15.0,
                     ),
                     Container(
-                      width: 250.0,
+                      width: 300.0,
                       child: TextField(
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
@@ -156,17 +164,30 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 25,),
+                SizedBox(
+                  height: 25,
+                ),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 65.0),
                       backgroundColor: const Color.fromRGBO(155, 231, 157, 1),
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: () {
-                    },
+                    onPressed: () {},
                     child: const Text('Register')),
-              // SizedBox(height: 130,),
+                SizedBox(height: 10,),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Return to Sign in',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
