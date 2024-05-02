@@ -1,0 +1,30 @@
+name: user_repository
+description: Repository that handles users
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # equatable: ^2.0.5
+  # firebase_auth: ^4.19.0
+  # cloud_firestore: ^4.16.0
+  firebase_storage: ^11.7.0
+  # rxdart: ^0.27.7
+  # path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+
+flutter:
+
+  uses-material-design: true
