@@ -49,7 +49,10 @@ class _HomePageState extends State<HomePage> {
               ))
         ],
       ),
-      body: _pages[_selectedIndex][0],
+      body: Padding(
+        padding: EdgeInsets.only(top: 20),
+        child: _pages[_selectedIndex][0],
+      ),
       drawer: DrawerComponent(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
