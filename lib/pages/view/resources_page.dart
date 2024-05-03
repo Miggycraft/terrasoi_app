@@ -9,62 +9,84 @@ class ResourcesPage extends StatefulWidget {
 }
 
 class _ResourcesPageState extends State<ResourcesPage> {
+  // Example list of articles; ideally, this would come from a database or API
+  final List<Map<String, dynamic>> articles = [
+    {
+      'title': 'The Ultimate Guide to Farming',
+      'subtitle': 'Read a selection of opinion pieces from world class journalists only on our blog',
+      'image': 'assets/Pictures/FarmBlog2.jpg',
+      'author': 'Mr. Nice Guy',
+      'readTime': '15 min read'
+    },
+    {
+      'title': 'Fighting Food Hunger',
+      'subtitle': 'Explore innovative approaches to combating hunger globally',
+      'image': 'assets/Pictures/Foodhunger.jpg',
+      'author': 'The Good Cop',
+      'readTime': '5 min read'
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Weekly Article 04/04/2024',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0), // Rounded corners for the card
-              ),
-              margin: EdgeInsets.all(16),
-              child: ClipRRect( // Clip the image with rounded corners
+      body: ListView.builder(
+        itemCount: articles.length,
+        itemBuilder: (BuildContext context, int index) {
+          return buildArticleCard(context, articles[index], index);
+        },
+      ),
+    );
+  }
+
+  Widget buildArticleCard(BuildContext context, Map<String, dynamic> article, int index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Weekly Article ${DateTime.now().subtract(Duration(days: index * 7)).toString().substring(0, 10)}', // Dynamic date generation
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          margin: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              ClipRRect(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15.0),
                   topRight: Radius.circular(15.0),
                 ),
                 child: Image.asset(
-                  'assets/Pictures/FarmBlog2.jpg',
+                  article['image'],
                   fit: BoxFit.cover,
                 ),
               ),
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text(
-                      'The Ultimate Guide to Farming',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    subtitle: Text(
-                      'Read a selection of opinion pieces from world class journalists only on our blog',
-                    ),
+              ListTile(
+                title: Text(
+                  article['title'],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Text(
-                      'Mr. Nice Guy | 15 min read',
-                      style: TextStyle(color: Colors.grey[600]),
-                    ),
-                  ),
-                ],
+                ),
+                subtitle: Text(article['subtitle']),
               ),
-            ),
-            // If you have more content or elements to add, continue here
-          ],
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  '${article['author']} | ${article['readTime']}',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
