@@ -8,7 +8,8 @@ class ReportingPage extends StatefulWidget {
   _ReportingPageState createState() => _ReportingPageState();
 }
 
-class _ReportingPageState extends State<ReportingPage> with SingleTickerProviderStateMixin {
+class _ReportingPageState extends State<ReportingPage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late List<Ratings> ratings;
   late List<PieChartData> chartData;
@@ -39,47 +40,51 @@ class _ReportingPageState extends State<ReportingPage> with SingleTickerProvider
       Ratings(4, 3, 5), // All Time
     ];
 
-    chartData = ratings.map((rating) =>
-        PieChartData(
-          borderData: FlBorderData(show: false),
-          sectionsSpace: 0,
-          centerSpaceRadius: 80,
-          sections: [
-            PieChartSectionData(
-              color: Colors.teal[200],
-              // Turquoise color
-              value: rating.production.toDouble() * 20,
-              title: '${rating.production * 20}%',
-              radius: 60,
-              titleStyle: TextStyle(fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            PieChartSectionData(
-              color: Colors.teal[400],
-              // Turquoise color
-              value: rating.quality.toDouble() * 20,
-              title: '${rating.quality * 20}%',
-              radius: 60,
-              titleStyle: TextStyle(fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            PieChartSectionData(
-              color: Colors.teal[600],
-              // Turquoise color
-              value: rating.service.toDouble() * 20,
-              title: '${rating.service * 20}%',
-              radius: 60,
-              titleStyle: TextStyle(fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ],
-        )).toList();
+    chartData = ratings
+        .map((rating) => PieChartData(
+              borderData: FlBorderData(show: false),
+              sectionsSpace: 0,
+              centerSpaceRadius: 80,
+              sections: [
+                PieChartSectionData(
+                  color: Colors.teal[200],
+                  // Turquoise color
+                  value: rating.production.toDouble() * 20,
+                  title: '${rating.production * 20}%',
+                  radius: 60,
+                  titleStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                PieChartSectionData(
+                  color: Colors.teal[400],
+                  // Turquoise color
+                  value: rating.quality.toDouble() * 20,
+                  title: '${rating.quality * 20}%',
+                  radius: 60,
+                  titleStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                PieChartSectionData(
+                  color: Colors.teal[600],
+                  // Turquoise color
+                  value: rating.service.toDouble() * 20,
+                  title: '${rating.service * 20}%',
+                  radius: 60,
+                  titleStyle: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ],
+            ))
+        .toList();
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
@@ -87,9 +92,14 @@ class _ReportingPageState extends State<ReportingPage> with SingleTickerProvider
           Material(
             child: TabBar(
               controller: _tabController,
-              labelColor: Theme.of(context).colorScheme.secondary,
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Theme.of(context).colorScheme.secondary,
+              labelColor: Colors.black,
+              unselectedLabelColor: Colors.green,
+              dividerColor: Colors.transparent,
+              indicatorColor: Colors.transparent,
+              padding: EdgeInsets.zero,
+              tabAlignment: TabAlignment.center,
+              isScrollable: true,
+              labelStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               tabs: const [
                 Tab(text: 'Day'),
                 Tab(text: 'Week'),
@@ -100,13 +110,16 @@ class _ReportingPageState extends State<ReportingPage> with SingleTickerProvider
           ),
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Center the column contents vertically
+              mainAxisAlignment: MainAxisAlignment.center,
+              // Center the column contents vertically
               children: [
                 Expanded(
                   flex: 5, // Adjust flex to give more room to the chart
                   child: Container(
-                    width: MediaQuery.of(context).size.width, // Set the width of the chart to the screen width
-                    height: MediaQuery.of(context).size.height * 0.5, // Set the height of the chart to half of the screen height
+                    width: MediaQuery.of(context).size.width,
+                    // Set the width of the chart to the screen width
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    // Set the height of the chart to half of the screen height
                     child: PieChart(
                       chartData[_tabController.index],
                     ),
@@ -124,43 +137,58 @@ class _ReportingPageState extends State<ReportingPage> with SingleTickerProvider
     );
   }
 
-
   Widget _buildRatingInfo(Ratings rating) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start, // Align items to the start of the column
+      mainAxisAlignment: MainAxisAlignment.start,
+      // Align items to the start of the column
       children: <Widget>[
         _buildRatingRow('Production', rating.production, Colors.teal[200]!),
+        const SizedBox(
+          height: 15,
+        ),
         _buildRatingRow('Quality', rating.quality, Colors.teal[400]!),
+        const SizedBox(
+          height: 15,
+        ),
         _buildRatingRow('Service', rating.service, Colors.teal[600]!),
       ],
     );
   }
 
-
   Widget _buildRatingRow(String label, int rating, Color color) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center, // Center the row contents
-      children: <Widget>[
-        Icon(Icons.circle, size: 20, color: color), // Small circle before the label
-        SizedBox(width: 12),
-        Text(label, style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold)),
-        SizedBox(width: 12),
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start, // Align stars to the left
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(5, (index) => Icon(
-              index < rating ? Icons.star : Icons.star_border,
-              color: index < rating ? Colors.amber : Colors.grey,
-              size: 24,
-            )),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // Center the row contents
+        children: <Widget>[
+          Row(
+            children: [
+              Icon(Icons.circle, size: 20, color: color),
+              SizedBox(width: 12),
+              Text(label,
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green[900])),
+              SizedBox(width: 12),
+            ],
           ),
-        ),
-      ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+                5,
+                (index) => Icon(
+                      index < rating ? Icons.star : Icons.star_border,
+                      color: index < rating ? Colors.amber : Colors.grey,
+                      size: 24,
+                    )),
+          ),
+        ],
+      ),
     );
   }
-
-
 
   @override
   void dispose() {
