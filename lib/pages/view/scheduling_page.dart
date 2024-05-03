@@ -15,7 +15,7 @@ class _SchedulingPageState extends State<SchedulingPage> {
   // Constants for month and year selection
   final List<String> months = List<String>.generate(12, (index) => '${index + 1}');
   final int currentYear = DateTime.now().year;
-  final List<String> years = List<String>.generate(21, (index) => '${currentYear - 10 + index}');
+  late final List<String> years = List<String>.generate(21, (index) => '${currentYear - 10 + index}');
 
   String? selectedMonth;
   String? selectedYear;
