@@ -10,6 +10,9 @@ class ResourcesPage extends StatefulWidget {
 class _ResourcesPageState extends State<ResourcesPage> {
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('Resources...'),);
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal:30.0),
+        child: Text('Resources...'),);
   }
+
 }
