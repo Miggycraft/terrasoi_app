@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'ArticleDetailPage.dart';
 
 class ResourcesPage extends StatefulWidget {
   const ResourcesPage({super.key});
@@ -16,34 +17,37 @@ class _ResourcesPageState extends State<ResourcesPage> {
       'subtitle': 'Read a selection of opinion pieces from world class journalists only on our blog',
       'image': 'assets/Pictures/FarmBlog2.jpg',
       'author': 'Mr. Nice Guy',
-      'readTime': '15 min read'
+      'readTime': '15 min read',
+      'dateCreated' : '2024-05-03'
     },
     {
       'title': 'Fighting Food Hunger',
       'subtitle': 'Explore innovative approaches to combating hunger globally',
       'image': 'assets/Pictures/Foodhunger.jpg',
       'author': 'The Good Cop',
-      'readTime': '5 min read'
+      'readTime': '5 min read',
+      'dateCreated' : '2024-04-26'
     },
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
+        body: ListView.builder(
         itemCount: articles.length,
-        itemBuilder: (BuildContext context, int index) {
-          return buildArticleCard(context, articles[index], index);
-        },
-      ),
-    );
+        itemBuilder: (BuildContext context, int index)=>
+      buildArticleCard(context, articles[index], index)
+    ),);
   }
 
-  Widget buildArticleCard(BuildContext context, Map<String, dynamic> article, int index) {
+  Widget buildArticleCard(BuildContext context, Map<String, dynamic> article,
+      int index) {
     return InkWell(
       onTap: () {
-        print('Article Tapped: ${article['title']}');
-
+        setState(() {
+          Navigator.push(context, MaterialPageRoute(
+              builder: (context) => ArticleDetailPage(article: article,)));
+        });
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +55,7 @@ class _ResourcesPageState extends State<ResourcesPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Weekly Article ${DateTime.now().subtract(Duration(days: index * 7)).toString().substring(0, 10)}', // Dynamic date generation
+                'Weekly Article ${articles[index]['dateCreated']}',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),

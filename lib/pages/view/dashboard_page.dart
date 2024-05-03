@@ -31,7 +31,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         hintText: 'Search all',
                         prefixIcon: Icon(Icons.search, color: Colors.grey),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(top: 15), // centers the placeholder
+                        contentPadding:
+                            EdgeInsets.only(top: 15), // centers the placeholder
                       ),
                     ),
                   ),
@@ -53,25 +54,32 @@ class _DashboardPageState extends State<DashboardPage> {
             // Section title with view all
             _buildSectionTitle('Analytics', 'View all'),
             const SizedBox(height: 20),
-            _buildAnalyticsItem(Icons.queue, 'Request Queue', Colors.teal[400]!),
-            _buildAnalyticsItem(Icons.how_to_vote, 'In Approval', Colors.blue[400]!),
-            _buildAnalyticsItem(Icons.border_color, 'In Signature', Colors.orange[400]!),
+            _buildAnalyticsItem(
+                Icons.queue, 'Request Queue', Colors.teal[400]!),
+            _buildAnalyticsItem(
+                Icons.how_to_vote, 'In Approval', Colors.blue[400]!),
+            _buildAnalyticsItem(
+                Icons.border_color, 'In Signature', Colors.orange[400]!),
             _buildAnalyticsItem(Icons.edit, 'In Draft', Colors.pink[400]!),
             const SizedBox(height: 20),
             _buildSectionTitle('Pending Approval', 'View all'),
-            Wrap(
-              spacing: 10,
+            Row(
               children: [
                 _buildNameTag('SHIVA', Colors.orange),
+                SizedBox(
+                  width: 20,
+                ),
                 _buildNameTag('ELLE', Colors.orange),
               ],
             ),
             const SizedBox(height: 20),
             _buildSectionTitle('Recent Contracts', 'View all'),
-            Wrap(
-              spacing: 10,
+            Row(
               children: [
                 _buildNameTag('ARJO', Colors.green),
+                SizedBox(
+                  width: 20,
+                ),
                 _buildNameTag('MARIE', Colors.green),
               ],
             ),
@@ -86,7 +94,8 @@ class _DashboardPageState extends State<DashboardPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Text(title,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         Text(action, style: TextStyle(color: Colors.grey)),
       ],
     );
@@ -102,23 +111,31 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       child: Row(
         children: [
-          CircleAvatar(backgroundColor: color, radius: 20, child: Icon(icon, color: Colors.white, size: 20)),
+          CircleAvatar(
+              backgroundColor: color,
+              radius: 20,
+              child: Icon(icon, color: Colors.white, size: 20)),
           SizedBox(width: 10),
-          Expanded(child: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+          Expanded(
+              child: Text(title,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
         ],
       ),
     );
   }
 
   Widget _buildNameTag(String name, Color color) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 75, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: color, width: 2),
+    return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: color, width: 2),
+        ),
+        child: Text(name, textAlign: TextAlign.center,
+            style: TextStyle(color: color, fontWeight: FontWeight.bold)),
       ),
-      child: Text(name, style: TextStyle(color: color, fontWeight: FontWeight.bold)),
     );
   }
 }
