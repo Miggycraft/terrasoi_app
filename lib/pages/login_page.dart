@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:terrasoi/util/verify_account.dart';
 
@@ -13,7 +14,6 @@ class _LoginPageState extends State<LoginPage> {
   Verification v = Verification();
   final TextEditingController _username = TextEditingController();
   final TextEditingController _password = TextEditingController();
-
 
   void verifyAccount() {
     if (v.isValid(_username.text, _password.text)) {
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             fit: BoxFit.cover,
           )),
           child: Padding(
-            padding: const EdgeInsets.only(top:80.0),
+            padding: const EdgeInsets.only(top: 80.0),
             child: Column(
               children: [
                 const Image(
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                         controller: _username,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.all(0),
+                          contentPadding: const EdgeInsets.all(0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25),
                           ),
@@ -146,8 +146,10 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(horizontal: 65.0),
-                              backgroundColor: const Color.fromRGBO(155, 231, 157, 1),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 65.0),
+                              backgroundColor:
+                                  const Color.fromRGBO(155, 231, 157, 1),
                               foregroundColor: Colors.black,
                             ),
                             onPressed: () {
@@ -158,16 +160,30 @@ class _LoginPageState extends State<LoginPage> {
                           'Forgot your Password?',
                           style: TextStyle(fontSize: 9, color: Colors.grey),
                         ),
-                        SizedBox(height: 20,),
-                        Row(
-                          children: [
-                            Text(
-                              'Guest Login',
-                              style: TextStyle(fontSize: 12,decoration: TextDecoration.underline),
-                            ),
-                            SizedBox(width: 8,),
-                            Icon(Icons.info_outline, size: 17, color: Colors.grey,),
-                          ],
+                        SizedBox(
+                          height: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () =>
+                              Navigator.pushReplacementNamed(context, '/home'),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Guest Login',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    decoration: TextDecoration.underline),
+                              ),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              Icon(
+                                Icons.info_outline,
+                                size: 17,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

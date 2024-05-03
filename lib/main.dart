@@ -5,12 +5,11 @@ import 'package:terrasoi/pages/register_page.dart';
 
 void main() {
   runApp(MaterialApp(
-    initialRoute: '/home',
-    debugShowCheckedModeBanner: false,
-    routes: {
-      '/': (context) => LoginPage(),
-      '/register': (context) => RegisterPage(),
-      '/home': (context) => HomePage(), 
-    }
-  ));
+      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => LoginPage(),
+        '/register': (context) => RegisterPage(),
+        '/home': (context) => HomePage(),
+      }));
 }

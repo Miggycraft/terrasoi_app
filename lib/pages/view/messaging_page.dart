@@ -22,34 +22,65 @@ class MessagingPage extends StatefulWidget {
   @override
   State<MessagingPage> createState() => _MessagingPageState();
 }
+
 class _MessagingPageState extends State<MessagingPage> {
   final List<ChatItem> _chats = [
     ChatItem(
       username: 'miggyboi',
       messages: [
-        Message(sender: 'miggyboi', text: 'Hi there, are you available around 4PM today for meeting with a new client?', time: '10:45 AM'),
+        Message(
+            sender: 'miggyboi',
+            text:
+                'Hi there, are you available around 4PM today for meeting with a new client?',
+            time: '10:45 AM'),
         Message(sender: 'me', text: 'Hey, miggyboi', time: '10:46 AM'),
-        Message(sender: 'me', text: 'Sure, just give me a call!', time: '10:46 AM'),
-        Message(sender: 'miggyboi', text: 'Great, see you then!', time: '10:48 AM'),
-        Message(sender: 'miggyboi', text: 'Don’t forget to bring the documents.', time: '10:49 AM'),
+        Message(
+            sender: 'me', text: 'Sure, just give me a call!', time: '10:46 AM'),
+        Message(
+            sender: 'miggyboi', text: 'Great, see you then!', time: '10:48 AM'),
+        Message(
+            sender: 'miggyboi',
+            text: 'Don’t forget to bring the documents.',
+            time: '10:49 AM'),
       ],
     ),
     ChatItem(
       username: 'JoddGwapo',
       messages: [
-        Message(sender: 'JoddGwapo', text: 'Are we still on for tomorrow?', time: 'Yesterday'),
+        Message(
+            sender: 'JoddGwapo',
+            text: 'Are we still on for tomorrow?',
+            time: 'Yesterday'),
         Message(sender: 'me', text: 'Yes, same time!', time: 'Yesterday'),
-        Message(sender: 'JoddGwapo', text: 'Awesome, Im looking good!', time: 'Yesterday'),
+        Message(
+            sender: 'JoddGwapo',
+            text: 'Awesome, Im looking good!',
+            time: 'Yesterday'),
       ],
     ),
     ChatItem(
       username: 'Shiva',
       messages: [
-        Message(sender: 'Shiva', text: 'I need help with the project.', time: 'Last week'),
-        Message(sender: 'me', text: 'What part are you stuck on?', time: 'Last week'),
-        Message(sender: 'Shiva', text: 'The design phase is confusing me.', time: 'Last week'),
-        Message(sender: 'me', text: 'Let’s schedule a meeting to discuss this.', time: 'Last week'),
-        Message(sender: 'Shiva', text: 'Thank you, that would be helpful.', time: 'Last week'),
+        Message(
+            sender: 'Shiva',
+            text: 'I need help with the project.',
+            time: 'Last week'),
+        Message(
+            sender: 'me',
+            text: 'What part are you stuck on?',
+            time: 'Last week'),
+        Message(
+            sender: 'Shiva',
+            text: 'The design phase is confusing me.',
+            time: 'Last week'),
+        Message(
+            sender: 'me',
+            text: 'Let’s schedule a meeting to discuss this.',
+            time: 'Last week'),
+        Message(
+            sender: 'Shiva',
+            text: 'Thank you, that would be helpful.',
+            time: 'Last week'),
       ],
     ),
   ];
@@ -58,25 +89,27 @@ class _MessagingPageState extends State<MessagingPage> {
     setState(() {
       _chats.removeAt(index);
     });
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Chat deleted')));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text('Chat deleted')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,  // Removes the default back button
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add, size: 30),
-            onPressed: () {
-              // Implement adding new chat functionality
-            },
-            tooltip: 'Add new chat',  // Optional: Adds a tooltip for accessibility
-          ),
-        ],
-        elevation: 0,  // Optional: Removes shadow from the AppBar
-      ),
+      // DISABLED FOR NOW :3
+      // appBar: AppBar(
+      //   automaticallyImplyLeading: false,  // Removes the default back button
+      //   actions: [
+      //     IconButton(
+      //       icon: Icon(Icons.add, size: 30),
+      //       onPressed: () {
+      //         // Implement adding new chat functionality
+      //       },
+      //       tooltip: 'Add new chat',  // Optional: Adds a tooltip for accessibility
+      //     ),
+      //   ],
+      //   elevation: 0,  // Optional: Removes shadow from the AppBar
+      // ),
       body: ListView.builder(
         itemCount: _chats.length,
         itemBuilder: (context, index) {
@@ -95,17 +128,27 @@ class _MessagingPageState extends State<MessagingPage> {
             ),
             child: ListTile(
               leading: CircleAvatar(
-                backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                backgroundImage:
+                    NetworkImage('https://via.placeholder.com/150'),
                 radius: 24,
               ),
               title: Text(item.username),
-              subtitle: Text(item.messages.last.text),  // Display the last message
+              subtitle: Text(item.messages.last.text),
+              // Display the last message
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetailsPage(chatItem: item)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChatDetailsPage(chatItem: item)));
               },
             ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        backgroundColor: Colors.green,
+        child: Icon(Icons.add, color: Colors.white,size: 35,),
       ),
     );
   }
@@ -133,7 +176,8 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
     String text = _messageController.text.trim();
     if (text.isNotEmpty) {
       setState(() {
-        widget.chatItem.messages.add(Message(sender: "me", text: text, time: "Now"));
+        widget.chatItem.messages
+            .add(Message(sender: "me", text: text, time: "Now"));
         _messageController.clear();
       });
     }
@@ -156,15 +200,20 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
               itemCount: widget.chatItem.messages.length,
               itemBuilder: (context, index) {
                 final message = widget.chatItem.messages[index];
-                final isMe = message.sender == "me"; // Assume "me" represents the user
+                final isMe =
+                    message.sender == "me"; // Assume "me" represents the user
                 return Dismissible(
-                  key: Key(message.text + index.toString()), // Unique key for Dismissible
-                  direction: DismissDirection.endToStart, // Only allow swipe from right to left
+                  key: Key(message.text + index.toString()),
+                  // Unique key for Dismissible
+                  direction: DismissDirection.endToStart,
+                  // Only allow swipe from right to left
                   onDismissed: (direction) {
                     setState(() {
-                      widget.chatItem.messages.removeAt(index); // Remove the message from the list
+                      widget.chatItem.messages
+                          .removeAt(index); // Remove the message from the list
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Message deleted")));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Message deleted")));
                   },
                   background: Container(
                     color: Colors.red,
@@ -173,7 +222,8 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                     child: Icon(Icons.delete, color: Colors.white),
                   ),
                   child: Align(
-                    alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+                    alignment:
+                        isMe ? Alignment.centerRight : Alignment.centerLeft,
                     child: Container(
                       padding: EdgeInsets.all(8),
                       margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -215,8 +265,6 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   }
 }
 
-
-
 class ChatItem {
   final String username;
   final List<Message> messages;
@@ -231,4 +279,3 @@ class Message {
 
   Message({required this.sender, required this.text, required this.time});
 }
-

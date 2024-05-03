@@ -20,7 +20,6 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          // width: ,
           height: size.height,
           decoration: BoxDecoration(
               image:
@@ -85,7 +84,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
-                                child: Text(value, style: TextStyle(fontWeight: FontWeight.w400),),
+                                child: Text(
+                                  value,
+                                  style: TextStyle(fontWeight: FontWeight.w400),
+                                ),
                               );
                             }).toList(),
                             onChanged: (String? value) {},
@@ -173,13 +175,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       backgroundColor: const Color.fromRGBO(155, 231, 157, 1),
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, '/home'),
                     child: const Text('Register')),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Navigator.pop(context),
                   child: const Text(
                     'Return to Sign in',
                     style: TextStyle(

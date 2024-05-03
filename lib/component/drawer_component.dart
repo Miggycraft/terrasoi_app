@@ -114,7 +114,7 @@ class DrawerComponent extends StatelessWidget {
                         )),
               ),
               const SizedBox(
-                height: 130,
+                height: 100,
               ),
               GestureDetector(
                 onTap: () => Navigator.pushReplacementNamed(context, '/'),

@@ -47,7 +47,7 @@ class _ReportingPageState extends State<ReportingPage>
               centerSpaceRadius: 80,
               sections: [
                 PieChartSectionData(
-                  color: Colors.teal[200],
+                  color: Colors.green[200],
                   // Turquoise color
                   value: rating.production.toDouble() * 20,
                   title: '${rating.production * 20}%',
@@ -58,7 +58,7 @@ class _ReportingPageState extends State<ReportingPage>
                       color: Colors.white),
                 ),
                 PieChartSectionData(
-                  color: Colors.teal[400],
+                  color: Colors.green[400],
                   // Turquoise color
                   value: rating.quality.toDouble() * 20,
                   title: '${rating.quality * 20}%',
@@ -69,7 +69,7 @@ class _ReportingPageState extends State<ReportingPage>
                       color: Colors.white),
                 ),
                 PieChartSectionData(
-                  color: Colors.teal[600],
+                  color: Colors.green[600],
                   // Turquoise color
                   value: rating.service.toDouble() * 20,
                   title: '${rating.service * 20}%',
@@ -142,15 +142,15 @@ class _ReportingPageState extends State<ReportingPage>
       mainAxisAlignment: MainAxisAlignment.start,
       // Align items to the start of the column
       children: <Widget>[
-        _buildRatingRow('Production', rating.production, Colors.teal[200]!),
+        _buildRatingRow('Production', rating.production, Colors.green[200]!),
         const SizedBox(
           height: 15,
         ),
-        _buildRatingRow('Quality', rating.quality, Colors.teal[400]!),
+        _buildRatingRow('Quality', rating.quality, Colors.green[400]!),
         const SizedBox(
           height: 15,
         ),
-        _buildRatingRow('Service', rating.service, Colors.teal[600]!),
+        _buildRatingRow('Service', rating.service, Colors.green[600]!),
       ],
     );
   }

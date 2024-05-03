@@ -6,6 +6,7 @@ class appBarComponent extends StatelessWidget implements PreferredSizeWidget{
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      surfaceTintColor: Colors.transparent,
       iconTheme: IconThemeData(color: Colors.green),
       title: Text(
         pageText
