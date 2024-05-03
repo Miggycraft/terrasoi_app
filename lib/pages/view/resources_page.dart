@@ -40,53 +40,59 @@ class _ResourcesPageState extends State<ResourcesPage> {
   }
 
   Widget buildArticleCard(BuildContext context, Map<String, dynamic> article, int index) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'Weekly Article ${DateTime.now().subtract(Duration(days: index * 7)).toString().substring(0, 10)}', // Dynamic date generation
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return InkWell(
+      onTap: () {
+        print('Article Tapped: ${article['title']}');
+
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Weekly Article ${DateTime.now().subtract(Duration(days: index * 7)).toString().substring(0, 10)}', // Dynamic date generation
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ),
-        ),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          margin: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0),
-                ),
-                child: Image.asset(
-                  article['image'],
-                  fit: BoxFit.cover,
-                ),
-              ),
-              ListTile(
-                title: Text(
-                  article['title'],
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            margin: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0),
+                  ),
+                  child: Image.asset(
+                    article['image'],
+                    fit: BoxFit.cover,
                   ),
                 ),
-                subtitle: Text(article['subtitle']),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  '${article['author']} | ${article['readTime']}',
-                  style: TextStyle(color: Colors.grey[600]),
+                ListTile(
+                  title: Text(
+                    article['title'],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  subtitle: Text(article['subtitle']),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    '${article['author']} | ${article['readTime']}',
+                    style: TextStyle(color: Colors.grey[600]),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
