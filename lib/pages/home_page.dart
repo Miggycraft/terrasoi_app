@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:terrasoi/component/appBar_component.dart';
 import 'package:terrasoi/component/drawer_component.dart';
 import 'package:terrasoi/pages/view/dashboard_page.dart';
 import 'package:terrasoi/pages/view/reporting_page.dart';
@@ -33,22 +34,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.green),
-        title: Text(
-          _pages[_selectedIndex][1],
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.notifications_none_outlined,
-                size: 40,
-                color: Colors.green,
-              ))
-        ],
-      ),
+      appBar: appBarComponent(pageText: _pages[_selectedIndex][1],),
       body: Padding(
         padding: EdgeInsets.only(top: 20),
         child: _pages[_selectedIndex][0],
