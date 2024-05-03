@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class SchedulingPage extends StatefulWidget {
   const SchedulingPage({Key? key}) : super(key: key);
@@ -11,118 +13,95 @@ class SchedulingPage extends StatefulWidget {
 class _SchedulingPageState extends State<SchedulingPage> {
   late DateTime _selectedDay;
   late DateTime _focusedDay;
-  late final Map<DateTime, List<Map<String, String>>> _selectedEvents;
-  // Constants for month and year selection
-  final List<String> months = List<String>.generate(12, (index) => '${index + 1}');
-  final int currentYear = DateTime.now().year;
-  late final List<String> years = List<String>.generate(21, (index) => '${currentYear - 10 + index}');
-
-  String? selectedMonth;
-  String? selectedYear;
+  final FlutterLocalNotificationsPlugin localNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
     _selectedDay = DateTime.now();
     _focusedDay = DateTime.now();
-    _selectedEvents = {
-      DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)): [
-        {'time': '08:00 - 09:00 AM', 'event': 'Packaging'},
-        {'time': '09:00 - 10:00 AM', 'event': 'Pick-up'},
-        {'time': '10:00 - 11:00 AM', 'event': 'Delivery'},
-        {'time': '11:00 - 12:00 AM', 'event': 'Arrival'},
-      ],
-    };
-    selectedMonth = '${_focusedDay.month}';
-    selectedYear = '${_focusedDay.year}';
+    var androidInitialize = new AndroidInitializationSettings('app_icon');
+    var initializationSettings = new InitializationSettings(android: androidInitialize);
+    localNotificationsPlugin.initialize(initializationSettings);
+
+    // Initial setup for notifications
+    _requestIOSPermissions();
   }
 
-  List<Map<String, String>> _getEventsForDay(DateTime day) {
-    return _selectedEvents[day] ?? [];
+  void _requestIOSPermissions() {
+    localNotificationsPlugin
+        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+  }
+
+  Future<void> _scheduleReminder(DateTime dateTime, String event) async {
+    tz.TZDateTime scheduleDate = tz.TZDateTime.from(dateTime.subtract(const Duration(minutes: 30)), tz.local);
+    var androidDetails = AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      channelDescription: 'channel_description',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    var platformDetails = NotificationDetails(android: androidDetails);
+    await localNotificationsPlugin.zonedSchedule(
+      0,
+      'Reminder for $event',
+      'Your event $event is starting soon!',
+      scheduleDate,
+      platformDetails,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
+      body: Column(
         children: [
-        Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-        DropdownButton<String>(
-        value: selectedMonth,
-        items: months.map<DropdownMenuItem<String>>((String value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(value),
-      );
-    }).toList(),
-    onChanged: (value) {
-    setState(() {
-    selectedMonth = value;
-    _focusedDay = DateTime(int.parse(selectedYear!), int.parse(selectedMonth!), _focusedDay.day);
-    });
-    },
-    ),
-    DropdownButton<String>(
-    value: selectedYear,
-    items: years.map<DropdownMenuItem<String>>((String value) {
-    return DropdownMenuItem<String>(
-    value: value,
-    child: Text(value),
-    );
-    }).toList(),
-    onChanged: (value) {
-    setState(() {
-    selectedYear = value;
-    _focusedDay = DateTime(int.parse(selectedYear!), int.parse(selectedMonth!), _focusedDay.day);
-    });
-    },
-    ),
-    ],
-    ),
-    TableCalendar(
-    firstDay: DateTime.utc(2020, 1, 1),
-    lastDay: DateTime.utc(2030, 12, 31),
-    focusedDay: _focusedDay,
-    calendarFormat: CalendarFormat.month,
-    startingDayOfWeek: StartingDayOfWeek.sunday,
-    selectedDayPredicate: (day) {
-    return isSameDay(_selectedDay, day);
-    },
-    onDaySelected: (selectedDay, focusedDay) {
-    setState(() {
-    _selectedDay = selectedDay;
-    _focusedDay = focusedDay;
-    });
-    },
-    onPageChanged: (focusedDay) {
-    _focusedDay = focusedDay;
-    },
-    ),
-    Expanded(
-    child: ListView.builder(
-    itemCount: _getEventsForDay(_selectedDay).length,
-    itemBuilder: (context, index) {
-    final event = _getEventsForDay(_selectedDay)[index];
-    return Card(
-    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-    child: ListTile(
-    leading: CircleAvatar(
-    backgroundColor: Colors.green,
-    child: Icon(Icons.check, color: Colors.white),
-    ),
-      title: Text(event['event'] ?? 'No event'),
-      subtitle: Text('${_selectedDay.month}/${_selectedDay.day}/${_selectedDay.year} | ${event['time']}'),
-    ),
-    );
-    },
-    ),
-    ),
+          TableCalendar(
+            firstDay: DateTime.utc(2020, 1, 1),
+            lastDay: DateTime.utc(2030, 12, 31),
+            focusedDay: _focusedDay,
+            calendarFormat: CalendarFormat.month,
+            startingDayOfWeek: StartingDayOfWeek.sunday,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
+              setState(() {
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay;
+              });
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: 4, // Assuming 4 events per day for simplicity
+              itemBuilder: (context, index) {
+                String event = "Event $index";
+                DateTime eventTime = _selectedDay.add(Duration(hours: 8 + index)); // Example event times
+                return ListTile(
+                  title: Text(event),
+                  subtitle: Text("${eventTime.hour}:00"),
+                  trailing: IconButton(
+                    icon: Icon(Icons.alarm),
+                    onPressed: () => _scheduleReminder(eventTime, event),
+                  ),
+                );
+              },
+            ),
+          ),
         ],
-        ),
+      ),
     );
   }
 }
-
-
