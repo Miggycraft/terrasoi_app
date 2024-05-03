@@ -35,21 +35,21 @@ class _MessagingPageState extends State<MessagingPage> {
       ],
     ),
     ChatItem(
-      username: 'miggygurl',
+      username: 'JoddGwapo',
       messages: [
-        Message(sender: 'miggygurl', text: 'Are we still on for tomorrow?', time: 'Yesterday'),
+        Message(sender: 'JoddGwapo', text: 'Are we still on for tomorrow?', time: 'Yesterday'),
         Message(sender: 'me', text: 'Yes, same time!', time: 'Yesterday'),
-        Message(sender: 'miggygurl', text: 'Awesome, looking forward!', time: 'Yesterday'),
+        Message(sender: 'JoddGwapo', text: 'Awesome, Im looking good!', time: 'Yesterday'),
       ],
     ),
     ChatItem(
-      username: 'miggythey/them',
+      username: 'Shiva',
       messages: [
-        Message(sender: 'miggythey/them', text: 'I need help with the project.', time: 'Last week'),
+        Message(sender: 'Shiva', text: 'I need help with the project.', time: 'Last week'),
         Message(sender: 'me', text: 'What part are you stuck on?', time: 'Last week'),
-        Message(sender: 'miggythey/them', text: 'The design phase is confusing me.', time: 'Last week'),
+        Message(sender: 'Shiva', text: 'The design phase is confusing me.', time: 'Last week'),
         Message(sender: 'me', text: 'Let’s schedule a meeting to discuss this.', time: 'Last week'),
-        Message(sender: 'miggythey/them', text: 'Thank you, that would be helpful.', time: 'Last week'),
+        Message(sender: 'Shiva', text: 'Thank you, that would be helpful.', time: 'Last week'),
       ],
     ),
   ];
@@ -111,16 +111,39 @@ class _MessagingPageState extends State<MessagingPage> {
   }
 }
 
-class ChatDetailsPage extends StatelessWidget {
+class ChatDetailsPage extends StatefulWidget {
   final ChatItem chatItem;
 
   ChatDetailsPage({Key? key, required this.chatItem}) : super(key: key);
 
   @override
+  _ChatDetailsPageState createState() => _ChatDetailsPageState();
+}
+
+class _ChatDetailsPageState extends State<ChatDetailsPage> {
+  TextEditingController _messageController = TextEditingController();
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _sendMessage() {
+    String text = _messageController.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        widget.chatItem.messages.add(Message(sender: "me", text: text, time: "Now"));
+        _messageController.clear();
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(chatItem.username),
+        title: Text(widget.chatItem.username),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
@@ -130,15 +153,17 @@ class ChatDetailsPage extends StatelessWidget {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: chatItem.messages.length,
+              itemCount: widget.chatItem.messages.length,
               itemBuilder: (context, index) {
-                final message = chatItem.messages[index];
+                final message = widget.chatItem.messages[index];
                 final isMe = message.sender == "me"; // Assume "me" represents the user
                 return Dismissible(
-                  key: Key(message.text + index.toString()),  // Unique key for Dismissible
-                  direction: DismissDirection.endToStart,  // Only allow swipe from right to left
+                  key: Key(message.text + index.toString()), // Unique key for Dismissible
+                  direction: DismissDirection.endToStart, // Only allow swipe from right to left
                   onDismissed: (direction) {
-                    chatItem.messages.removeAt(index);  // Remove the message from the list
+                    setState(() {
+                      widget.chatItem.messages.removeAt(index); // Remove the message from the list
+                    });
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Message deleted")));
                   },
                   background: Container(
@@ -165,11 +190,23 @@ class ChatDetailsPage extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: "Write your message here",
-                border: InputBorder.none,
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _messageController,
+                    decoration: InputDecoration(
+                      hintText: "Write your message here",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _sendMessage,
+                ),
+              ],
             ),
           ),
         ],
@@ -177,6 +214,7 @@ class ChatDetailsPage extends StatelessWidget {
     );
   }
 }
+
 
 
 class ChatItem {
