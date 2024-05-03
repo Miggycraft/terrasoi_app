@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'ArticleDetailPage.dart';
 
 class ResourcesPage extends StatefulWidget {
   const ResourcesPage({super.key});
@@ -42,8 +43,10 @@ class _ResourcesPageState extends State<ResourcesPage> {
   Widget buildArticleCard(BuildContext context, Map<String, dynamic> article, int index) {
     return InkWell(
       onTap: () {
-        print('Article Tapped: ${article['title']}');
-
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ArticleDetailPage(article: article)),
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
