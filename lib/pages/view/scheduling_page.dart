@@ -1,70 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SchedulingPage extends StatefulWidget {
-  const SchedulingPage({super.key});
+  const SchedulingPage({Key? key}) : super(key: key);
 
   @override
-  _SchedulingPageState createState() => _SchedulingPageState();
+  State<SchedulingPage> createState() => _SchedulingPageState();
 }
 
 class _SchedulingPageState extends State<SchedulingPage> {
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.week;
-
-  late Map<DateTime, List<String>> _selectedEvents; // Using a simple String list for events
+  late DateTime _selectedDay;
+  late DateTime _focusedDay;
+  late final Map<DateTime, List<Map<String, String>>> _selectedEvents;
 
   @override
   void initState() {
     super.initState();
+    _selectedDay = DateTime.now();
+    _focusedDay = DateTime.now();
+    // Initializing event details for the current week's Monday
     _selectedEvents = {
-      DateTime.now(): ['Event 1', 'Event 2']
+      DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)): [
+        {'time': '08:00 - 09:00 AM', 'event': 'Packaging'},
+        {'time': '09:00 - 10:00 AM', 'event': 'Pick-up'},
+        {'time': '10:00 - 11:00 AM', 'event': 'Delivery'},
+        {'time': '11:00 - 12:00 AM', 'event': 'Arrival'},
+      ],
     };
   }
 
-  List<String> _getEventsForDay(DateTime day) {
+  List<Map<String, String>> _getEventsForDay(DateTime day) {
     return _selectedEvents[day] ?? [];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Scheduling'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_none),
-            onPressed: () {},
-          ),
-        ],
-      ),
       body: Column(
         children: [
           TableCalendar(
             firstDay: DateTime.utc(2020, 1, 1),
             lastDay: DateTime.utc(2030, 12, 31),
             focusedDay: _focusedDay,
-            calendarFormat: _calendarFormat,
+            calendarFormat: CalendarFormat.week,
+            startingDayOfWeek: StartingDayOfWeek.sunday,
             selectedDayPredicate: (day) {
               return isSameDay(_selectedDay, day);
             },
             onDaySelected: (selectedDay, focusedDay) {
               setState(() {
                 _selectedDay = selectedDay;
-                _focusedDay = focusedDay; // update `_focusedDay` here as well
+                _focusedDay = focusedDay;
               });
             },
-            eventLoader: _getEventsForDay,
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
           ),
           Expanded(
             child: ListView.builder(
               itemCount: _getEventsForDay(_selectedDay).length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Event at ${index + 8}:00 AM'),
-                  subtitle: Text('${_selectedDay.month}/${_selectedDay.day}/${_selectedDay.year} | ${index + 8}:00-${index + 9}:00 AM'),
+                final event = _getEventsForDay(_selectedDay)[index];
+                return Card(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.green,
+                      child: Icon(Icons.check, color: Colors.white),
+                    ),
+                    title: Text(event['event'] ?? 'No event'),
+                    subtitle: Text('${_selectedDay.month}/${_selectedDay.day}/${_selectedDay.year} | ${event['time']}'),
+                  ),
                 );
               },
             ),
