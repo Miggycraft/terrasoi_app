@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/gestures.dart';
 import 'dart:async';
 
 void main() => runApp(MyApp());
@@ -70,7 +72,6 @@ class _MessagingPageState extends State<MessagingPage> {
   }
 
   void _addNewChat() {
-    // Implement your functionality to add a new chat here
     setState(() {
       _chats.add(ChatItem(
         id: _chats.length + 1,
@@ -84,15 +85,15 @@ class _MessagingPageState extends State<MessagingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,  // Removes the default back button
+        automaticallyImplyLeading: false, // Removes the default back button
         actions: [
           IconButton(
             icon: Icon(Icons.add, size: 30),
-            onPressed: _addNewChat,  // Call _addNewChat method when the button is pressed
-            tooltip: 'Add new chat',  // Optional: Adds a tooltip for accessibility
+            onPressed: _addNewChat, // Call _addNewChat method when the button is pressed
+            tooltip: 'Add new chat', // Optional: Adds a tooltip for accessibility
           ),
         ],
-        elevation: 0,  // Optional: Removes shadow from the AppBar
+        elevation: 0, // Optional: Removes shadow from the AppBar
       ),
       body: ListView.builder(
         itemCount: _chats.length,
@@ -116,9 +117,16 @@ class _MessagingPageState extends State<MessagingPage> {
                 radius: 24,
               ),
               title: Text(item.username),
-              subtitle: Text(item.messages.isNotEmpty ? item.messages.last.text : ''),  // Display the last message if exists
+              subtitle: Text(item.messages.isNotEmpty ? item.messages.last.text : ''), // Display the last message if exists
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetailsPage(chatItem: item)));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatDetailsPage(chatItem: item),
+                  ),
+                ).then((_) {
+                  setState(() {}); // Update the chat preview automatically
+                });
               },
             ),
           );
@@ -156,6 +164,57 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
     }
   }
 
+  Future<void> _launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget _buildMessageWidget(Message message) {
+    final isMe = message.sender == "me"; // Assume "me" represents the user
+    final urlRegExp = RegExp(r'https?:\/\/[^\s]+');
+
+    List<InlineSpan> textSpans = [];
+    final matches = urlRegExp.allMatches(message.text);
+    int start = 0;
+
+    for (final match in matches) {
+      if (match.start > start) {
+        textSpans.add(TextSpan(text: message.text.substring(start, match.start)));
+      }
+      textSpans.add(TextSpan(
+        text: match.group(0),
+        style: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
+        recognizer: TapGestureRecognizer()..onTap = () => _launchURL(match.group(0)!),
+      ));
+      start = match.end;
+    }
+
+    if (start < message.text.length) {
+      textSpans.add(TextSpan(text: message.text.substring(start)));
+    }
+
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: EdgeInsets.all(8),
+        margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        decoration: BoxDecoration(
+          color: isMe ? Colors.green[300] : Colors.grey[300],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: RichText(
+          text: TextSpan(
+            style: TextStyle(color: Colors.black),
+            children: textSpans,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,7 +232,6 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
               itemCount: widget.chatItem.messages.length,
               itemBuilder: (context, index) {
                 final message = widget.chatItem.messages[index];
-                final isMe = message.sender == "me"; // Assume "me" represents the user
                 return Dismissible(
                   key: Key(message.text + index.toString()), // Unique key for Dismissible
                   direction: DismissDirection.endToStart, // Only allow swipe from right to left
@@ -189,18 +247,7 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
                     alignment: Alignment.centerRight,
                     child: Icon(Icons.delete, color: Colors.white),
                   ),
-                  child: Align(
-                    alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                      decoration: BoxDecoration(
-                        color: isMe ? Colors.green[300] : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(message.text),
-                    ),
-                  ),
+                  child: _buildMessageWidget(message),
                 );
               },
             ),
