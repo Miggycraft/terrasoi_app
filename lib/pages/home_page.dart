@@ -42,67 +42,70 @@ class _HomePageState extends State<HomePage> {
       drawer: DrawerComponent(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.teal,
+        unselectedItemColor: Colors.green,
+        items: [
           BottomNavigationBarItem(
-              label: '',
-              icon: IconButton(
-                onPressed: () {
-                  navigateBottomBar(0);
-                },
-                icon: Icon(
-                  Icons.home_outlined,
-                  size: 45,
-                  color: Colors.green,
-                ),
-              )),
+            label: '',
+            icon: IconButton(
+              onPressed: () {
+                navigateBottomBar(0);
+              },
+              icon: Icon(
+                Icons.home_outlined,
+                size: 45,
+              ),
+            ),
+          ),
           BottomNavigationBarItem(
-              label: '',
-              icon: IconButton(
-                onPressed: () {
-                  navigateBottomBar(1);
-                },
-                icon: Icon(
-                  Icons.calendar_month_outlined,
-                  size: 45,
-                  color: Colors.green,
-                ),
-              )),
+            label: '',
+            icon: IconButton(
+              onPressed: () {
+                navigateBottomBar(1);
+              },
+              icon: Icon(
+                Icons.calendar_month_outlined,
+                size: 45,
+              ),
+            ),
+          ),
           BottomNavigationBarItem(
-              label: '',
-              icon: IconButton(
-                onPressed: () {
-                  navigateBottomBar(2);
-                },
-                icon: Icon(
-                  Icons.auto_graph,
-                  size: 45,
-                  color: Colors.green,
-                ),
-              )),
+            label: '',
+            icon: IconButton(
+              onPressed: () {
+                navigateBottomBar(2);
+              },
+              icon: Icon(
+                Icons.auto_graph,
+                size: 45,
+              ),
+            ),
+          ),
           BottomNavigationBarItem(
-              label: '',
-              icon: IconButton(
-                onPressed: () {
-                  navigateBottomBar(3);
-                },
-                icon: Icon(
-                  Icons.book_outlined,
-                  size: 45,
-                  color: Colors.green,
-                ),
-              )),
+            label: '',
+            icon: IconButton(
+              onPressed: () {
+                navigateBottomBar(3);
+              },
+              icon: Icon(
+                Icons.book_outlined,
+                size: 45,
+              ),
+            ),
+          ),
           BottomNavigationBarItem(
-              label: '',
-              icon: IconButton(
-                onPressed: () {
-                  navigateBottomBar(4);
-                },
-                icon: Icon(
-                  Icons.chat_outlined,
-                  size: 45,
-                  color: Colors.green,
-                ),
-              )),
+            label: '',
+            icon: IconButton(
+              onPressed: () {
+                navigateBottomBar(4);
+              },
+              icon: Icon(
+                Icons.chat_outlined,
+                size: 45,
+              ),
+            ),
+          ),
         ],
       ),
     );

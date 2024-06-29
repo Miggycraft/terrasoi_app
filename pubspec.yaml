@@ -5,16 +5,20 @@ publish_to: 'none' # This line ensures your package is not accidentally publishe
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.3 <4.0.0'
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  url_launcher: ^6.0.20
+  cupertino_icons: ^1.0.6
   table_calendar: ^3.0.3
   timezone: ^0.9.3
   flutter_local_notifications: ^17.1.1
-  cupertino_icons: ^1.0.6
-  fl_chart: ^0.50.0  # Add this line for circular charts
+  fl_chart: ^0.50.0
+  sqflite: ^2.0.0+3
+  path_provider: ^2.1.0
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:
