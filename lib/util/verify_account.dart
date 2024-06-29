@@ -16,4 +16,24 @@ class Verification {
 
     return false;
   }
+
+  bool validUsername(String name){
+    return name.length > 8;
+  }
+
+  bool validPassword(String pass){
+    return pass.length > 8;
+  }
+
+  bool validEmail(String email){
+    if (email.length < 8){
+      return false;
+    }
+    int l = email.length;
+    if (email.substring(l - 4) != ".com"){
+      return false;
+    }
+
+    return true;
+  }
 }

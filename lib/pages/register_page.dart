@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:terrasoi/util/verify_account.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -8,6 +9,24 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // variables
+  Verification v = Verification();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  // TODO add for Account Status din
+
+  void validAccount(){
+    if (v.validEmail(_email.text) && v.validUsername(_password.text)){
+      Navigator.pushReplacementNamed(context, '/home');
+    } else{
+      var t = const SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text('Invalid Username/Password!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(t);
+    }
+  }
+
   final List<String> status = <String>[
     'Farmer',
     'Restaurant Owner',
@@ -113,6 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Container(
                           width: 300.0,
                           child: TextField(
+                            controller: _email,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(0),
@@ -150,6 +170,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     Container(
                       width: 300.0,
                       child: TextField(
+                        controller: _password,
+                        obscureText: true,
+                        enableSuggestions: false,
                         textAlign: TextAlign.center,
                         decoration: InputDecoration(
                           contentPadding: const EdgeInsets.all(0),
@@ -160,7 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderSide: const BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(25),
                           ),
-                          hintText: 'Phone Number',
+                          hintText: 'Password',
                         ),
                       ),
                     ),
@@ -175,8 +198,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       backgroundColor: const Color.fromRGBO(155, 231, 157, 1),
                       foregroundColor: Colors.black,
                     ),
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, '/home'),
+                    onPressed: () {
+                      validAccount();
+                    },
                     child: const Text('Register')),
                 SizedBox(
                   height: 10,
