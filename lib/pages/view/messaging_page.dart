@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:async';
 
 void main() => runApp(MyApp());
 
@@ -22,12 +26,14 @@ class MessagingPage extends StatefulWidget {
   @override
   State<MessagingPage> createState() => _MessagingPageState();
 }
+
 class _MessagingPageState extends State<MessagingPage> {
   final List<ChatItem> _chats = [
     ChatItem(
+      id: 1,
       username: 'miggyboi',
       messages: [
-        Message(sender: 'miggyboi', text: 'Hi there, are you available around 4PM today for meeting with a new client?', time: '10:45 AM'),
+        Message(sender: 'miggyboi', text: 'Hi there, are you available around 4PM today for a meeting with a new client?', time: '10:45 AM'),
         Message(sender: 'me', text: 'Hey, miggyboi', time: '10:46 AM'),
         Message(sender: 'me', text: 'Sure, just give me a call!', time: '10:46 AM'),
         Message(sender: 'miggyboi', text: 'Great, see you then!', time: '10:48 AM'),
@@ -35,14 +41,16 @@ class _MessagingPageState extends State<MessagingPage> {
       ],
     ),
     ChatItem(
+      id: 2,
       username: 'JoddGwapo',
       messages: [
         Message(sender: 'JoddGwapo', text: 'Are we still on for tomorrow?', time: 'Yesterday'),
         Message(sender: 'me', text: 'Yes, same time!', time: 'Yesterday'),
-        Message(sender: 'JoddGwapo', text: 'Awesome, Im looking good!', time: 'Yesterday'),
+        Message(sender: 'JoddGwapo', text: 'Awesome, I’m looking good!', time: 'Yesterday'),
       ],
     ),
     ChatItem(
+      id: 3,
       username: 'Shiva',
       messages: [
         Message(sender: 'Shiva', text: 'I need help with the project.', time: 'Last week'),
@@ -58,7 +66,18 @@ class _MessagingPageState extends State<MessagingPage> {
     setState(() {
       _chats.removeAt(index);
     });
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Chat deleted')));
+    ScaffoldMessenger.of(context as BuildContext).showSnackBar(SnackBar(content: Text('Chat deleted')));
+  }
+
+  void _addNewChat() {
+    // Implement your functionality to add a new chat here
+    setState(() {
+      _chats.add(ChatItem(
+        id: _chats.length + 1,
+        username: 'New User',
+        messages: [],
+      ));
+    });
   }
 
   @override
@@ -69,9 +88,7 @@ class _MessagingPageState extends State<MessagingPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.add, size: 30),
-            onPressed: () {
-              // Implement adding new chat functionality
-            },
+            onPressed: _addNewChat,  // Call _addNewChat method when the button is pressed
             tooltip: 'Add new chat',  // Optional: Adds a tooltip for accessibility
           ),
         ],
@@ -82,7 +99,7 @@ class _MessagingPageState extends State<MessagingPage> {
         itemBuilder: (context, index) {
           final item = _chats[index];
           return Dismissible(
-            key: Key(item.username),
+            key: Key(item.id.toString()), // Use ID as the key
             direction: DismissDirection.endToStart,
             onDismissed: (direction) {
               _deleteChat(index);
@@ -99,7 +116,7 @@ class _MessagingPageState extends State<MessagingPage> {
                 radius: 24,
               ),
               title: Text(item.username),
-              subtitle: Text(item.messages.last.text),  // Display the last message
+              subtitle: Text(item.messages.isNotEmpty ? item.messages.last.text : ''),  // Display the last message if exists
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => ChatDetailsPage(chatItem: item)));
               },
@@ -215,13 +232,12 @@ class _ChatDetailsPageState extends State<ChatDetailsPage> {
   }
 }
 
-
-
 class ChatItem {
+  final int id;
   final String username;
   final List<Message> messages;
 
-  ChatItem({required this.username, required this.messages});
+  ChatItem({required this.id, required this.username, required this.messages});
 }
 
 class Message {
@@ -231,4 +247,3 @@ class Message {
 
   Message({required this.sender, required this.text, required this.time});
 }
-
